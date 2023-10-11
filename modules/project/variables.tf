@@ -22,6 +22,12 @@ variable "parent_id" {
   type        = string
 }
 
+variable "project_apis" {
+  description = "APIs that should be enabled on the project"
+  type        = set(string)
+  default     = []
+}
+
 variable "project_name" {
   description = "Name of the project."
   type        = string

@@ -1,5 +1,6 @@
 module "project" {
   source         = "./modules/project"
-  create_project = true
-  project_name = "bdb-workstation-tst"
+  create_project = var.create_project
+  project_name   = var.project_id
+  parent_id      = var.parent_id
 }

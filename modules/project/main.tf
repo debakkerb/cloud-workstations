@@ -2,6 +2,14 @@ locals {
   parent_type  = split("/", var.parent_id)[0]
   parent_id    = split("/", var.parent_id)[1]
   project_name = var.create_project ? format("%s-%s", var.project_name, random_id.default.0.hex) : var.project_name
+
+  project = var.create_project ? {
+    project_id = google_project.default.project_id
+    number     = google_project.default.number
+  } : {
+    project_id = data.google_project.default.project_id
+    number     = google_project.default.number
+  }
 }
 
 data "google_project" "default" {
@@ -18,6 +26,12 @@ resource "google_project" "default" {
   org_id              = local.parent_type == "organizations" ? local.parent_id : null
   auto_create_network = false
   labels              = var.labels
+}
+
+resource "google_project_service" "default" {
+  for_each = var.project_apis
+  project  = local.project.project_id
+  service  = each.value
 }
 
 resource "random_id" "default" {
