@@ -4,3 +4,4 @@ module "project" {
   project_name   = var.project_id
   parent_id      = var.parent_id
 }
+
