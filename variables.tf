@@ -10,6 +10,12 @@ variable "create_project" {
   default     = true
 }
 
+variable "labels" {
+  description = "Labels to attach to each resource"
+  type        = map(string)
+  default     = {}
+}
+
 variable "network_name" {
   description = "Name of the network"
   type        = string
@@ -43,6 +49,24 @@ variable "subnet_name" {
   description = "Name of the subnet where workstations will be created."
   type        = string
   default     = "workstations"
+}
+
+variable "workstation_cluster_id" {
+  description = "ID of the workstation cluster"
+  type        = string
+  default     = "workstation-cluster"
+}
+
+variable "workstation_cluster_config" {
+  description = "Configuration to apply to the cluster"
+  type        = object({
+    display_name            = string
+    enable_private_endpoint = bool
+  })
+  default = {
+    display_name            = "Workstation Cluster"
+    enable_private_endpoint = false
+  }
 }
 
 variable "workstation_images_repository_id" {
