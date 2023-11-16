@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  description = "ID of the project"
-  value       = local.project.project_id
-  depends_on  = [
-    google_project_service.default
-  ]
-}
+resource "null_resource" "build_and_push_image" {
+  triggers = {
+    cloudbuild_yaml_sha = filesha1("${path.module}/cloudbuild.yaml")
+    dockerfile_sha      = filesha1("${path.module}/Dockerfile")
+  }
 
-output "project_number" {
-  description = "Number"
-  value       = local.project.number
-
-  depends_on = [
-    google_project_service.default
-  ]
+  provisioner "local-exec" {
+    working_dir = path.module
+    command     = "./scripts/build_image.sh ${var.project_id} ${var.region}"
+  }
 }

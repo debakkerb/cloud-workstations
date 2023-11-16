@@ -20,5 +20,45 @@ module "project" {
   project_name   = var.project_id
   parent_id      = var.parent_id
   labels         = var.labels
+  project_apis   = var.enable_apis ? [
+    "cloudresourcemanager.googleapis.com",
+    "storage.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "compute.googleapis.com",
+    "cloudscheduler.googleapis.com",
+    "containerscanning.googleapis.com",
+    "workstations.googleapis.com",
+    "sourcerepo.googleapis.com"
+  ] : []
 }
 
+resource "google_sourcerepo_repository" "cloud_workstation_code" {
+  project = module.project.project_id
+  name    = "workstation-code"
+}
+
+resource "random_id" "unique_identifier" {
+  byte_length = 2
+}
+
+resource "google_storage_bucket" "terraform_state" {
+  project                     = module.project.project_id
+  location                    = var.region
+  name                        = format("%s-%s", "ws-tf-state", random_id.unique_identifier.hex)
+  force_destroy               = true
+  uniform_bucket_level_access = true
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    condition {
+      num_newer_versions = 5
+    }
+
+    action {
+      type = "Delete"
+    }
+  }
+}

@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  description = "ID of the project"
-  value       = local.project.project_id
-  depends_on  = [
-    google_project_service.default
-  ]
+variable "project_id" {
+  description = "Project where the Cloud Build pipeline runs"
+  type        = string
 }
 
-output "project_number" {
-  description = "Number"
-  value       = local.project.number
-
-  depends_on = [
-    google_project_service.default
-  ]
+variable "region" {
+  description = "Region where the Cloud Build pipeline will run and where the image is stored"
+  type        = string
 }

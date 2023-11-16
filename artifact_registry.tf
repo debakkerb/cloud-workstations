@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+ locals {
+   workstation_registry_repository_name = "${var.region}-docker.pkg.dev/${module.project.project_id}/${google_artifact_registry_repository.workstation_images.repository_id}"
+ }
+
+
 resource "google_artifact_registry_repository" "workstation_images" {
   project       = module.project.project_id
   format        = "DOCKER"

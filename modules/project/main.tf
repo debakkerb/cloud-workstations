@@ -1,14 +1,14 @@
 locals {
-  parent_type  = split("/", var.parent_id)[0]
-  parent_id    = split("/", var.parent_id)[1]
+  parent_type  = var.create_project ? split("/", var.parent_id)[0] : ""
+  parent_id    = var.create_project ? split("/", var.parent_id)[1] : ""
   project_name = var.create_project ? format("%s-%s", var.project_name, random_id.default.0.hex) : var.project_name
 
   project = var.create_project ? {
-    project_id = google_project.default.project_id
-    number     = google_project.default.number
+    project_id = google_project.default.0.project_id
+    number     = google_project.default.0.number
   } : {
-    project_id = data.google_project.default.project_id
-    number     = google_project.default.number
+    project_id = data.google_project.default.0.project_id
+    number     = data.google_project.default.0.number
   }
 }
 
@@ -29,9 +29,11 @@ resource "google_project" "default" {
 }
 
 resource "google_project_service" "default" {
-  for_each = var.project_apis
-  project  = local.project.project_id
-  service  = each.value
+  for_each                   = var.project_apis
+  project                    = local.project.project_id
+  service                    = each.value
+  disable_dependent_services = true
+  disable_on_destroy         = true
 }
 
 resource "random_id" "default" {

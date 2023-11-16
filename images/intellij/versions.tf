@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  description = "ID of the project"
-  value       = local.project.project_id
-  depends_on  = [
-    google_project_service.default
-  ]
-}
+terraform {
+  required_version = ">= 1.6.0"
 
-output "project_number" {
-  description = "Number"
-  value       = local.project.number
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 5.6.0"
+    }
 
-  depends_on = [
-    google_project_service.default
-  ]
+    google-beta = {
+      source  = "hashicorp-google-beta"
+      version = ">= 5.6.0"
+    }
+  }
 }

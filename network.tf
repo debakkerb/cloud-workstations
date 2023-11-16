@@ -47,7 +47,7 @@ resource "google_compute_router_nat" "default" {
   name                               = "ws-public-internet-access"
   nat_ip_allocate_option             = "AUTO_ONLY"
   router                             = google_compute_router.default.0.name
-  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETS_ALL_IP_RANGES"
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
   region                             = var.region
 
   log_config {

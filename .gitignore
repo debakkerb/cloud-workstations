@@ -2,3 +2,7 @@
 *.iml
 .idea/**
 .terraform/**
+terraform.tfvars
+.terraform.lock.hcl
+*.tfstate*
+*.hcl

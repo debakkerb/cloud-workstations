@@ -26,6 +26,12 @@ variable "create_project" {
   default     = true
 }
 
+variable "enable_apis" {
+  description = "Enable APIs on the project"
+  type        = bool
+  default     = true
+}
+
 variable "labels" {
   description = "Labels to attach to each resource"
   type        = map(string)
