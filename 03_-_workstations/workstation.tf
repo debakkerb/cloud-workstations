@@ -125,3 +125,4 @@ resource "google_workstations_workstation" "oss_workstation" {
   display_name           = "OSS Workstation"
   labels                 = local.labels
 }
+

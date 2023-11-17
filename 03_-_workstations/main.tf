@@ -15,6 +15,7 @@
  */
 
 locals {
+  admin_user                  = data.terraform_remote_state.base.outputs.admin_user
   artifact_registry_name      = data.terraform_remote_state.workstation_base.outputs.artifact_registry_name
   intellij_ws_image_full_name = data.terraform_remote_state.workstation_base.outputs.intellij_ws_image_full_name
   labels                      = data.terraform_remote_state.base.outputs.labels

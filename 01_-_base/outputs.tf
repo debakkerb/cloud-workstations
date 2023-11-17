@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+output "admin_user" {
+  description = "Admin user who gains access to the project and workstations"
+  value       = var.admin_user
+}
+
 output "labels" {
   description = "Labels to add to the resource"
   value       = var.labels

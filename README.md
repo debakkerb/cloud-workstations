@@ -46,5 +46,56 @@ create_project = <CREATE_PROJECT>
 admin_user     = "$(gcloud config list --format json | jq -r .core.account)"
 EOL
 
+# Initialise Terraform
+terraform init -upgrade -reconfigure
 
+# Apply the changes
+terraform apply -auto-approve
+
+# Init terraform again and type 'yes' when the system asks you to copy the state remotely
+terraform init
 ```
+
+## Git 
+
+We've now created a Google Cloud project with all necessary resources to start creating the Workstation cluster, config and images.  As we are using Cloud Build and Cloud Build points to Cloud Source Repositories, we need to reinitialise Git
+
+Currently, all `backend.tf`-files are ignored.  They contain the configuration for the Storage buckets to store the Terraform state files.  When you're working with a private repository and you control who has access to it, you can remove them from .gitignore and store them in Git as well.  This will allow you to work on the same state from different locations and with different users. 
+
+```shell
+# Initialise a new Git repository
+git init $PARENT_DIR
+
+# Set Origin
+$(terraform output -json | jq -r .git_repo_init_cmd.value)
+
+# Set the branch to main
+git checkout -b main
+
+# [OPTIONAL] Remove backend.tf files from .gitignore
+sed -i '/backend.tf/d' $PARENT_DIR/.gitignore
+
+# Add all files and commit them
+git add --all && git commit -m "Initial setup"
+
+# Push local changes
+git push --set-upstream origin main
+```
+
+## Workstation Preparation 
+
+In this part, we'll create an Artifact Registry repository and create the base images for both OSS and Intellij workstations.
+
+```shell
+# Switch to the correct directory
+cd $PARENT_DIR/02_-_workstation_base
+
+# Apply the Terraform changes
+terraform init -upgrade -reconfigure
+terraform apply -auto-approve
+```
+
+## Workstations
+
+In this section, we will create the workstation for your personal use
+
