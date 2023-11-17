@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+variable "admin_user" {
+  description = "User who runs the code"
+  type        = string
+}
+
 variable "allow_internet_access" {
   description = "Whether or not access to the public internet is allowed"
   type        = bool
@@ -35,7 +40,9 @@ variable "enable_apis" {
 variable "labels" {
   description = "Labels to attach to each resource"
   type        = map(string)
-  default     = {}
+  default     = {
+    created-by = "terraform"
+  }
 }
 
 variable "network_name" {
@@ -73,26 +80,8 @@ variable "subnet_name" {
   default     = "workstations"
 }
 
-variable "workstation_cluster_id" {
-  description = "ID of the workstation cluster"
+variable "zone" {
+  description = "Zone where all resources will be created"
   type        = string
-  default     = "workstation-cluster"
-}
-
-variable "workstation_cluster_config" {
-  description = "Configuration to apply to the cluster"
-  type        = object({
-    display_name            = string
-    enable_private_endpoint = bool
-  })
-  default = {
-    display_name            = "Workstation Cluster"
-    enable_private_endpoint = false
-  }
-}
-
-variable "workstation_images_repository_id" {
-  description = "ID of the repository where workstation images will be stored"
-  type        = string
-  default     = "workstation-images"
+  default     = "europe-west1-b"
 }

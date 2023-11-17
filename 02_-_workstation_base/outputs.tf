@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  description = "Project ID where resources are created"
-  value       = module.project.project_id
+output "artifact_registry_name" {
+  value = google_artifact_registry_repository.workstation_images.name
+}
+
+output "intellij_ws_image_full_name" {
+  value = "${google_artifact_registry_repository.workstation_images.name}/${module.intellij_workstation_image.ide_name}-workstation:${module.intellij_workstation_image.image_tag}"
+}
+
+output "oss_ws_image_full_name" {
+  value = "${google_artifact_registry_repository.workstation_images.name}/${module.oss_workstation_image.ide_name}-workstation:${module.oss_workstation_image.image_tag}"
 }

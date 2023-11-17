@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "Project where the Cloud Build pipeline runs"
-  type        = string
+terraform {
+  backend "gcs" {
+    bucket = "${BUCKET_NAME}"
+    prefix = "${PREFIX}"
+  }
 }
 
-variable "region" {
-  description = "Region where the Cloud Build pipeline will run and where the image is stored"
-  type        = string
+data "terraform_remote_state" "base" {
+  backend = "gcs"
+  config  = {
+    bucket = "${BUCKET_NAME}"
+    prefix = "${BASE_PREFIX}"
+  }
 }

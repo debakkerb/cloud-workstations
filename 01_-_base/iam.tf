@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 1.6.0"
-
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 5.6.0"
-    }
-
-    google-beta = {
-      source  = "hashicorp-google-beta"
-      version = ">= 5.6.0"
-    }
-  }
+resource "google_project_iam_member" "admin_user_permissions" {
+  for_each = toset([
+    "roles/source.admin",
+    "roles/cloudscheduler.admin",
+    "roles/workstations.admin",
+    "roles/storage.admin",
+    "roles/compute.admin",
+    "roles/artifactregistry.admin",
+    "roles/cloudbuild.builds.editor",
+    "roles/browser" // Needed for JetBrains Gateway, otherwise it's impossible to browse available Workstations
+  ])
+  project = module.project.project_id
+  member  = "user:${var.admin_user}"
+  role    = each.value
 }

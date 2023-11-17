@@ -1,8 +1,10 @@
 *.code-workspace
 *.iml
 .idea/**
-.terraform/**
+**/.terraform/**
 terraform.tfvars
 .terraform.lock.hcl
 *.tfstate*
 *.hcl
+backend.tf
+.git_bak

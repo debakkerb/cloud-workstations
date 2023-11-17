@@ -16,12 +16,13 @@
 
 resource "null_resource" "build_and_push_image" {
   triggers = {
-    cloudbuild_yaml_sha = filesha1("${path.module}/cloudbuild.yaml")
-    dockerfile_sha      = filesha1("${path.module}/Dockerfile")
+    cloudbuild_yaml_sha     = filesha1("${path.module}/cloudbuild.yaml")
+    dockerfile_intellij_sha = filesha1("${path.module}/Dockerfile_intellij")
+    dockerfile_oss_sha      = filesha1("${path.module}/Dockerfile_oss")
   }
 
   provisioner "local-exec" {
     working_dir = path.module
-    command     = "./scripts/build_image.sh ${var.project_id} ${var.region}"
+    command     = "./scripts/build_image.sh ${var.project_id} ${var.region} ${var.image_repository_name} ${var.ide_name} ${var.image_tag} ./"
   }
 }

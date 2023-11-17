@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
- locals {
-   workstation_registry_repository_name = "${var.region}-docker.pkg.dev/${module.project.project_id}/${google_artifact_registry_repository.workstation_images.repository_id}"
- }
-
-
-resource "google_artifact_registry_repository" "workstation_images" {
-  project       = module.project.project_id
-  format        = "DOCKER"
-  repository_id = var.workstation_images_repository_id
-  location      = var.region
-
-  docker_config {
-    immutable_tags = true
+terraform {
+  backend "gcs" {
+    bucket = "${BUCKET_NAME}"
+    prefix = "${PREFIX}"
   }
 }
+
+data "terraform_remote_state" "base" {
+  backend = "gcs"
+  config  = {
+    bucket = "${BUCKET_NAME}"
+    prefix = "${BASE_PREFIX}"
+  }
+}
+
+data "terraform_remote_state" "workstation_base" {
+  backend = "gcs"
+  config  = {
+    bucket = "${BUCKET_NAME}"
+    prefix = "${WORKSTATION_BASE_PREFIX}"
+  }
+}
+

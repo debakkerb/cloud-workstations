@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'Build Intellij Workstation Image'
-    args:
-      - build
-      - --tag=${_IMAGE_REPOSITORY_NAME}/${_IMAGE_NAME}:${_IMAGE_TAG}
-      - .
-    dir: '${_WORKING_DIR}'
-images: [ ]
-tags: [ ]
-options:
-  logging: CLOUD_LOGGING_ONLY
-  machineType: 'E2_HIGHCPU_8'
-  dynamicSubstitutions: true
-  automapSubstitutions: true
+PROJECT_ID=$1
+REGION=$2
+IMAGE_REPOSITORY_NAME=$3
+IDE_NAME=$4
+IMAGE_TAG=$5
+WORKING_DIR=$6
+
+gcloud builds submit . --config cloudbuild.yaml \
+  --project ${PROJECT_ID} --region ${REGION} \
+  --substitutions=_IMAGE_REPOSITORY_NAME=${IMAGE_REPOSITORY_NAME},_IDE_NAME=${IDE_NAME},_IMAGE_TAG=${IMAGE_TAG},_WORKING_DIR=${WORKING_DIR}

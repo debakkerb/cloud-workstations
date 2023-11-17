@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
+
 resource "google_compute_network" "workstations" {
-  project                 = var.project_id
+  project                 = module.project.project_id
   name                    = var.network_name
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "workstations" {
-  project                  = var.project_id
+  project                  = module.project.project_id
   name                     = var.subnet_name
   network                  = google_compute_network.workstations.name
   ip_cidr_range            = var.subnet_cidr_range
@@ -31,7 +32,7 @@ resource "google_compute_subnetwork" "workstations" {
 
 resource "google_compute_router" "default" {
   count   = var.allow_internet_access ? 1 : 0
-  project = var.project_id
+  project = module.project.project_id
   name    = "ws-public-internet-access"
   network = google_compute_network.workstations.name
   region  = var.region
@@ -43,7 +44,7 @@ resource "google_compute_router" "default" {
 
 resource "google_compute_router_nat" "default" {
   count                              = var.allow_internet_access ? 1 : 0
-  project                            = var.project_id
+  project                            = module.project.project_id
   name                               = "ws-public-internet-access"
   nat_ip_allocate_option             = "AUTO_ONLY"
   router                             = google_compute_router.default.0.name
