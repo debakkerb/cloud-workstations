@@ -1,6 +1,7 @@
 # Cloud Workstations
 
-The purpose of this repository is to demonstrate Cloud Workstations.  The code creates the following resources:
+The purpose of this repository is to demonstrate Cloud Workstations. The code creates the following resources:
+
 - Enables the necessary APIs
 - Create a Cloud Source Repository to host the code.
 - A Cloud Build trigger to create the Workstation images.
@@ -33,7 +34,8 @@ rm -rf .git
 
 ## Terraform code
 
-In this section, you will create a `terraform.tfvars`-file in the [01_-_base](./01_-_base)-directory.  Make sure to update `<PROJECT_ID>` and `<CREATE_PROJECT>` first, before you hit enter.
+In this section, you will create a `terraform.tfvars`-file in the [01_-_base](./01_-_base)-directory. Make sure to
+update `<PROJECT_ID>` and `<CREATE_PROJECT>` first, before you hit enter.
 
 ```shell
 # Move to the correct folder
@@ -56,11 +58,15 @@ terraform apply -auto-approve
 terraform init
 ```
 
-## Git 
+## Git
 
-We've now created a Google Cloud project with all necessary resources to start creating the Workstation cluster, config and images.  As we are using Cloud Build and Cloud Build points to Cloud Source Repositories, we need to reinitialise Git
+We've now created a Google Cloud project with all necessary resources to start creating the Workstation cluster, config
+and images. As we are using Cloud Build and Cloud Build points to Cloud Source Repositories, we need to reinitialise Git
 
-Currently, all `backend.tf`-files are ignored.  They contain the configuration for the Storage buckets to store the Terraform state files.  When you're working with a private repository and you control who has access to it, you can remove them from .gitignore and store them in Git as well.  This will allow you to work on the same state from different locations and with different users. 
+Currently, all `backend.tf`-files are ignored. They contain the configuration for the Storage buckets to store the
+Terraform state files. When you're working with a private repository and you control who has access to it, you can
+remove them from .gitignore and store them in Git as well. This will allow you to work on the same state from different
+locations and with different users.
 
 ```shell
 # Initialise a new Git repository
@@ -82,9 +88,10 @@ git add --all && git commit -m "Initial setup"
 git push --set-upstream origin main
 ```
 
-## Workstation Preparation 
+## Workstation Preparation
 
-In this part, we'll create an Artifact Registry repository and create the base images for both OSS and Intellij workstations.
+In this part, we'll create an Artifact Registry repository and create the base images for both OSS and Intellij
+workstations.
 
 ```shell
 # Switch to the correct directory
@@ -97,5 +104,73 @@ terraform apply -auto-approve
 
 ## Workstations
 
-In this section, we will create the workstation for your personal use
+In this section, we will create the workstation for your personal use. You can either create a Workstation instance with
+Intellij or OSS (or both). By default, an instance with Intellij is created, but you can change this behaviour by
+updating the following variables:
 
+- `create_intellij_workstation`: Set to true in case you want to create a Workstation instance with Intellij (default)
+- `create_oss_workstation`: Set to true in case you want an image with OSS
+
+Create a `terraform.tfvars`-file in [03_-_workstations](./03_-_workstations) to override the default values for these
+variables.
+
+```shell
+# Switch to the correct directory
+cd $PARENT_DIR/03_-_workstations
+
+# Apply the Terraform changes
+terraform init -upgrade -reconfigure
+terraform apply -auto-approve
+```
+
+Once finished, you should be able to access your Workstation in the UI. In case you are using Intellij, following
+the [JetBrains Gateway instructions](https://cloud.google.com/workstations/docs/develop-code-using-local-jetbrains-ides)
+to access your Workstation.
+
+# Update base image
+
+If you want to add additional packages to your Cloud Workstation, you can update the Dockerfiles for your preferred
+IDE ([Intellij](./00_-_modules/workstation-image/Dockerfile_intellij), [OSS](./00_-_modules/workstation-image/Dockerfile_oss)).
+If you want to install a set of plugins, you can follow the instructions
+listed [here](https://cloud.google.com/workstations/docs/customize-container-images#sample_custom_dockerfiles.
+
+# Update Workstation Configuration
+
+The default configuration in this repository spins up a Workstation with the following baseline configuration:
+
+- Machine type: `e2-standard-8`
+- Disk size: `100GB`
+- FS Type: `ext4`
+- Disk type: `SSD`
+
+You can update these values by creating (or updating) a `terraform.tfvars`-file
+in [03_-_workstations](./03_-_workstations) and adding the following variable:
+
+```shell
+workstation_host_config = {
+  machine_type = "<DESIRED_MACHINE_TYPE"
+  disable_public_ip_addresses = true
+  shielded_instance_config = {
+    enable_secure_boot = true|false
+    enable_vtpm = true|false
+    enable_integrity_monitoring = true|false
+  }
+}
+
+workstation_directories_config = {
+  mount_path = "<HOME_DIRECTORY>"
+  gce_pd = {
+    size_gb = <SIZE>
+    fs_type = "<FS_TYPE>"
+    disk_type = "<DISK_TYPE>"
+    reclaim_policy = "<RECLAIM_POLICY>"
+  }
+}
+```
+
+# Project creation
+
+By default, the code will create a project and create the resources in there. If want to deploy the resources in an
+existing project, you can set the variable `create_project` to false in a `terraform.tfvars`-file in
+the [01_-_base](./01_-_base)-directory. If you do this, make sure that `project_name` matches the project ID of the
+existing project.

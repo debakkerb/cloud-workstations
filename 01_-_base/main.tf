@@ -15,12 +15,13 @@
  */
 
 module "project" {
-  source         = "../00_-_modules/project"
-  create_project = var.create_project
-  project_name   = var.project_id
-  parent_id      = var.parent_id
-  labels         = var.labels
-  project_apis   = var.enable_apis ? [
+  source          = "../00_-_modules/project"
+  create_project  = var.create_project
+  project_name    = var.project_id
+  parent_id       = var.parent_id
+  billing_account = var.billing_account_id
+  labels          = var.labels
+  project_apis    = var.enable_apis ? [
     "cloudresourcemanager.googleapis.com",
     "storage.googleapis.com",
     "cloudbuild.googleapis.com",

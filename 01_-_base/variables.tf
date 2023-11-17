@@ -25,6 +25,12 @@ variable "allow_internet_access" {
   default     = true
 }
 
+variable "billing_account_id" {
+  description = "Billing Account that should be attached to the project"
+  type        = string
+  default     = ""
+}
+
 variable "create_project" {
   description = "Whether or not a project should be created"
   type        = string
