@@ -140,7 +140,7 @@ to access your Workstation.
 # Update base image
 
 If you want to add additional packages to your Cloud Workstation, you can update the Dockerfiles for your preferred
-IDE ([Intellij](./00_-_modules/workstation-image/Dockerfile_intellij), [OSS](./00_-_modules/workstation-image/Dockerfile_oss).
+IDE ([Intellij](./00_-_modules/workstation-image/Dockerfile_intellij), [OSS](./00_-_modules/workstation-image/Dockerfile_oss)).
 If you want to install a set of plugins, you can follow the instructions
 listed [here](https://cloud.google.com/workstations/docs/customize-container-images#sample_custom_dockerfiles).
 
