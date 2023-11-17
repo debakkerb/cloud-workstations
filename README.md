@@ -2,11 +2,11 @@
 
 # Table of Contents
 
-[Introduction](#introduction)
-[Install](#install)
-[Update Base Image](#update-base-image)
-[Update Workstation Configuration](#update-workstation-configuration)
-[Project Creation](#project-creation)
+- [Introduction](#introduction)
+- [Install](#install)
+- [Update Base Image](#update-base-image)
+- [Update Workstation Configuration](#update-workstation-configuration)
+- [Project Creation](#project-creation)
 
 # Introduction
 
