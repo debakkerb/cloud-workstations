@@ -27,6 +27,10 @@ that to spin up the Workstation. This ensures that you always have the latest pa
 If you don't want this behaviour or you want to use a fixed version for, let's say, Intellij, you can always update the
 corresponding Dockerfile and refer to the proper version.
 
+**IMPORTANT**: Because of this behaviour, anything that sits outside your home directory doesn't persist across
+sessions. That means that if you use package managers to install anything, you need to update the corresponding
+Dockerfile.
+
 # Install
 
 Run the following script to create everything in a Google Cloud project you manage.
