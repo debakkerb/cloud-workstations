@@ -1,5 +1,15 @@
 # Cloud Workstations
 
+# Table of Contents
+
+[Introduction](#introduction)
+[Install](#install)
+[Update Base Image](#update-base-image)
+[Update Workstation Configuration](#update-workstation-configuration)
+[Project Creation](#project-creation)
+
+# Introduction
+
 The purpose of this repository is to demonstrate Cloud Workstations. The code creates the following resources:
 
 - Enables the necessary APIs
