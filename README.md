@@ -21,6 +21,12 @@ The purpose of this repository is to demonstrate Cloud Workstations. The code cr
 - A Workstation configuration
 - A Workstation with Intellij
 
+Cloud Scheduler is used to trigger an automated build every 24 hours. The reason is that Google publishes updated images
+on a regular basis. Every time a workstation is restarted, it pulls the latest image from Artifact Registry and uses
+that to spin up the Workstation. This ensures that you always have the latest packages and latest version of your IDE.
+If you don't want this behaviour or you want to use a fixed version for, let's say, Intellij, you can always update the
+corresponding Dockerfile and refer to the proper version.
+
 # Install
 
 Run the following script to create everything in a Google Cloud project you manage.
